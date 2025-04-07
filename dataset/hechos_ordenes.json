@@ -1,0 +1,43 @@
+{
+	"name": "hechos_ordenes",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dw_pizzas",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "dw"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "order_details_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "idOrden",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "pizzaId",
+				"type": "varchar"
+			},
+			{
+				"name": "cantidad",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "tipoPizza",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "HECHOS_ORDENES"
+		}
+	}
+}
