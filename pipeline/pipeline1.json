@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "df_dim_order",
+						"referenceName": "df_dim_pizza",
 						"type": "DataFlowReference"
 					},
 					"compute": {
