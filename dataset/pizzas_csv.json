@@ -5,6 +5,9 @@
 			"referenceName": "pizza_sales",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "datos"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
