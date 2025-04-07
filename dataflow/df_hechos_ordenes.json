@@ -1,0 +1,115 @@
+{
+	"name": "df_hechos_ordenes",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "order_details_csv",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "dim_order",
+						"type": "DatasetReference"
+					},
+					"name": "dimOrder"
+				},
+				{
+					"dataset": {
+						"referenceName": "dim_pizza",
+						"type": "DatasetReference"
+					},
+					"name": "dimPizza"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "hechos_ordenes",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "lookup2"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          order_details_id as integer,",
+				"          order_id as integer,",
+				"          pizza_id as string,",
+				"          quantity as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source(output(",
+				"          idOrden as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select idOrden from dbo.dim_order',",
+				"     format: 'query') ~> dimOrder",
+				"source(output(",
+				"          pizzaId as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'select pizzaId from dbo.dim_pizza',",
+				"     format: 'query') ~> dimPizza",
+				"source1, dimOrder lookup(order_id == idOrden,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1, dimPizza lookup(pizza_id == pizzaId,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup2",
+				"lookup2 select(mapColumn(",
+				"          quantity,",
+				"          idOrden,",
+				"          pizzaId",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          order_details_id as integer,",
+				"          idOrden as integer,",
+				"          pizzaId as string,",
+				"          cantidad as integer,",
+				"          tipoPizza as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          idOrden,",
+				"          pizzaId,",
+				"          cantidad = quantity",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

@@ -26,7 +26,7 @@
 				"source(output(",
 				"          order_id as integer,",
 				"          date as date,",
-				"          time as timestamp 'yyyy.MM.dd HH:mm:ss'",
+				"          time as timestamp 'HH:mm:ss'",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
