@@ -1,0 +1,39 @@
+{
+	"name": "pizza_types_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "pizza_sales",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "datos"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "pizza_types.csv",
+				"container": "pizzas"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "pizza_type_id",
+				"type": "String"
+			},
+			{
+				"name": "name",
+				"type": "String"
+			},
+			{
+				"name": "category",
+				"type": "String"
+			}
+		]
+	}
+}
